@@ -1,4 +1,13 @@
 /**
+ * task 1.1
+ */
+
+function reverseNumbers(str){
+
+    return str.split("").reverse().join("");
+}
+
+/**
  * task 1.2
  * 转utf-8
  */
