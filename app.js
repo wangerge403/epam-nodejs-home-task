@@ -12,7 +12,8 @@ function reverseNumbers(str){
  * 转utf-8
  */
 const csv = require("csvtojson");
-const iconv = require("iconv-lite");
+// const iconv = require("iconv-lite");
+import iconv from 'iconv-lite'
 
 const csvFilePath = "./static/test.csv";
 
