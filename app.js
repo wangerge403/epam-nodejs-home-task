@@ -2,21 +2,22 @@ const csv = require("csvtojson");
 const iconv = require("iconv-lite");
 const fs = require("fs");
 
+const file_path = "./static/2.csv";
+
 /**
  * task 1.1
+ * @param {*} str 
+ * @returns 
  */
-
 function reverseNumbers(str){
     return str.split("").reverse().join("");
 }
 console.log(reverseNumbers('12345 678'))
+
 /**
  * task 1.2
- * 
+ * @param {*} file_path 
  */
-
-const file_path = "./static/2.csv";
-
 async function csvToJson (file_path) {
   try {
     const jsonObj = await csv().fromFile(file_path)
@@ -30,7 +31,10 @@ async function csvToJson (file_path) {
   }
 }
 
-// 创建txt文件
+/**
+ * 创建txt文件
+ * @param {*} arr 
+ */
 function createTxt (arr) {
   const txt = fs.createWriteStream('./static/2.txt', {encoding: 'utf8'});
   arr.forEach(row => {
