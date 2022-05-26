@@ -1,7 +1,8 @@
 const csv = require("csvtojson");
 const iconv = require("iconv-lite");
 const fs = require("fs");
-
+// import iconv from 'iconv-lite';
+// import fs from 'fs';
 /**
  * task 1.2
  * @param {*} file_path 
@@ -37,7 +38,3 @@ function createTxt (arr) {
   txt.end();
 }
 csvToJson(file_path)
-
-// ES6
-// import iconv from 'iconv-lite';
-// import fs from 'fs';
