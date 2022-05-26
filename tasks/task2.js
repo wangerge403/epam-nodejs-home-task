@@ -32,12 +32,13 @@ async function csvToJson (file_path) {
 
 const file_name = path.resolve(__dirname, "../static/2.txt");
 function createTxt (arr) {
-  const txt = fs.createWriteStream(file_name, {encoding: 'utf8'}); // writable
+  // ws: writable的子类writeStream
+  const ws = fs.createWriteStream(file_name, {encoding: 'utf8'});
   arr.forEach(row => {
-    txt.write("\r\n"); // 换行
-    txt.write(JSON.stringify(row));
+    ws.write("\r\n"); // 换行
+    ws.write(JSON.stringify(row));
   });
   
-  txt.end();
+  ws.end();
 }
 csvToJson(file_path)
