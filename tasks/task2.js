@@ -29,7 +29,7 @@ async function csvToJson (file_path) {
  * @param {*} arr 
  */
 function createTxt (arr) {
-  const txt = fs.createWriteStream('./static/2.txt', {encoding: 'utf8'});
+  const txt = fs.createWriteStream('./static/2.txt', {encoding: 'utf8'}); // writable
   arr.forEach(row => {
     txt.write("\r\n"); // 换行
     txt.write(JSON.stringify(row));
