@@ -3,13 +3,14 @@ const csv = require("csvtojson");
 // const fs = require("fs");
 import iconv from 'iconv-lite';
 import fs from 'fs';
+import path from 'path';
+
 /**
  * task 1.2
  * @param {*} file_path 
  */
 
-const file_path = "./static/2.csv";
-
+const file_path = path.resolve(__dirname, "../static/2.csv");
 // csv文件转json
 async function csvToJson (file_path) {
   try {
@@ -28,8 +29,10 @@ async function csvToJson (file_path) {
  * 创建txt文件
  * @param {*} arr 
  */
+
+const file_name = path.resolve(__dirname, "../static/2.txt");
 function createTxt (arr) {
-  const txt = fs.createWriteStream('./static/2.txt', {encoding: 'utf8'}); // writable
+  const txt = fs.createWriteStream(file_name, {encoding: 'utf8'}); // writable
   arr.forEach(row => {
     txt.write("\r\n"); // 换行
     txt.write(JSON.stringify(row));
