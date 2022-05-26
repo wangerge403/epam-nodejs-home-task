@@ -1,8 +1,8 @@
 const csv = require("csvtojson");
-const iconv = require("iconv-lite");
-const fs = require("fs");
-// import iconv from 'iconv-lite';
-// import fs from 'fs';
+// const iconv = require("iconv-lite");
+// const fs = require("fs");
+import iconv from 'iconv-lite';
+import fs from 'fs';
 /**
  * task 1.2
  * @param {*} file_path 
