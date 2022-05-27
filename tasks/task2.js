@@ -7,22 +7,26 @@ import path from 'path';
 
 async function csvToJsonAndTxt() {
 
-  const file_path = path.resolve(__dirname, "../static/2.csv");
-  const file_name = path.resolve(__dirname, "../static/2.txt");
-  const ws = fs.createWriteStream(file_name, {encoding: 'utf8'});
+  try {
+    const file_path = path.resolve(__dirname, "../static/2.csv");
+    const file_name = path.resolve(__dirname, "../static/2.txt");
+    const ws = fs.createWriteStream(file_name, {encoding: 'utf8'});
 
-  await csv().fromFile(file_path).on('data', chunk => {
-    // readStream
-    const flag = ws.write(chunk);
-    if(!flag) {
-      csv().pause(); // 暂停读取
-    }
-  })
+    await csv().fromFile(file_path).on('data', chunk => {
+      // readStream
+      const flag = ws.write(chunk);
+      if(!flag) {
+        csv().pause(); // 暂停读取
+      }
+    })
 
-  // writeStream
-  ws.on("drain", _ => {
-    csv().resume();
-  })
+    // writeStream
+    ws.on("drain", _ => {
+      csv().resume();
+    })
+  } catch (error) {
+    console.log(error)
+  }
 
 }
 
