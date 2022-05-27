@@ -19,11 +19,19 @@ async function csvToJsonAndTxt() {
         csv().pause(); // 暂停读取
       }
     })
-
+    csv().on('error',(err)=>{
+      console.log(err)
+    })
+    
     // writeStream
     ws.on("drain", _ => {
       csv().resume();
     })
+    ws.on("error", err => {
+      console.log(err)
+    })
+    
+
   } catch (error) {
     console.log(error)
   }
