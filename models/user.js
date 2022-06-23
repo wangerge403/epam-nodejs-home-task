@@ -54,11 +54,13 @@
 // export default UserModel;
 
 import { Sequelize, Model } from "sequelize";
+import sequelize from "../config/db";
+import { merge } from 'lodash';
 
-class UserModel extends Model{};
+class UserSql extends Model{};
 
 
-UserModel.init({
+UserSql.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -84,9 +86,9 @@ merge(
   {
     sequelize,
     tableName: 'user',
-    modelName: 'UserModel'
+    modelName: 'UserSql'
   }
 )
 )
 
-export { UserModel };
+export { UserSql };
