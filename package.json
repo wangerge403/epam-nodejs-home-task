@@ -9,6 +9,8 @@
     "express": "^4.18.1",
     "iconv-lite": "^0.6.3",
     "md5": "^2.3.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.21.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
@@ -20,9 +22,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "task1": "nodemon --exec babel-node ./tasks/task1.js",
-    "task2": "nodemon --exec babel-node ./tasks/task2.js",
-    "module2": "nodemon --exec babel-node ./tasks/module2/task.js"
+    "task": "nodemon --exec babel-node app.js"
   },
   "author": "",
   "license": "ISC"
