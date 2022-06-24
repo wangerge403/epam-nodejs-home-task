@@ -4,21 +4,38 @@
 
 import express from "express";
 import  userRouter from "./routes/api/users";
-import errorMiddleware from "./middleware/errorMiddleware"
+import errorMiddleware from "./middleware/errorMiddleware";
+import { sqlPool } from "./config/db";
+
+  const sql = `CREATE TABLE users (
+    id INT4 NOT NULL,
+    LOGIN TEXT NOT NULL, -- 用户名（唯一）
+    PASSWORD VARCHAR(255) NOT NULL, -- 用户密码
+    AGE INT NOT NULL, -- 用户年龄
+    IS_DELETED INT DEFAULT 0 NOT NULL, -- 是否被删除1 已删除,
+    PRIMARY KEY(id)
+  );`
+  const sql2 = () => {return `select count(*) from pg_class where relname = 'users';`}
+  sqlPool.connect((err) => {
+    if(err) {
+        return console.error('初始化数据库连接失败', err);
+    }
+    sqlPool.query(sql2()).then((res) => {
+        const [{count}] = res.rows;
+        if(count === '0') {
+            sqlPool.query(sql);
+            
+            return console.log("users表创建成功")
+        }
+        return console.log("users表已存在", count)
+    })
+    .catch(err => {
+        console.log("error====", err)
+    });
+})
 
 const app = express();
 const port = 5008;
-
-// app.all('*', function (req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header(`Content-Type,Content-Length,
-//      Authorization, Accept,X-Requested-With`);
-//     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-//     res.header("Access-Control-Allow-Credentials", true);
-//     res.header("X-Powered-By", '3.2.1');
-//     if (req.method == "OPTIONS") res.send(200);
-//     else next();
-// });
 
 app.use(express.json())
 // user api

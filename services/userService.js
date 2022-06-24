@@ -1,86 +1,103 @@
 
 // import { UserSql } from '../models/user';
+import { sqlPool } from "../config/db";
 import md5 from "md5";
+import HttpException from '../exception';
 // const userSql = new UserSql();
-
-import * as pg from "pg";
-
-const options = {
-    host: "localhost",
-    user: "postgres",
-    port: "5432",
-    password: "123456"
-    
-}
-
-const sqlPool = new pg.Pool(options);
-const sql = `CREATE TABLE users (
-    id INT4 NOT NULL,
-    LOGIN TEXT NOT NULL, -- 用户名
-    PASSWORD VARCHAR(255) NOT NULL, -- 用户密码
-    AGE INT NOT NULL, -- 用户年龄
-    IS_DELETED INT DEFAULT 0 NOT NULL, -- 是否被删除1 已删除,
-    PRIMARY KEY(id)
-);`
-const sql2 = `select count(*) from pg_class where relname = 'users';`
-sqlPool.connect(async(err) => {
-    if(err) {
-        return console.error('数据库连接失败', err);
-    // console.log('数据库连接成功并创建users表', created)
+// 创建用户
+const sql3 = ({logins, passwords, age}) => {return `INSERT INTO users (login, PASSWORD) VALUES ('"+ logins +"', '"+ passwords +"');`} 
+// 此用户详情
+const sql4 = (id) => {return `SELECT count(*) from users where id = '"+ id +"' AND is_deleted = 0;`}
+const isUser = async(id) => {
+  const res = await sqlPool.query(sql4(id));
+  const [{count}] = res.rows;
+    if(count === '0') {
+      throw new HttpException({ code: 100003, message: ERROR_CODES[100003] });
     }
-    sqlPool.query(sql2).then((res) => {
-        const [{count}] = res.rows;
-        if(count === '0') {
-            sqlPool.query(sql);
-            
-            return console.log("users表创建成功")
-        }
-        return console.log("users表已存在", count)
-    });
-    // sqlPool.query(sql);
-})
+    return true;
+}
+// 更新用户
+const sql5 = ({id, newLogin}) => {return `SELECT users SET login = '"+ newLogin +"' where id = '"+ id +"' AND is_deleted = 0;`} 
+// 删除用户
+const sql6 = (id) => {return `SELECT users SET is_deleted = 1 where id = '"+ id +"';`} 
+// 是否存在此数据
+const sql7 = ({login: logins}) => {return `SELECT count(*) FROM users WHERE is_deleted = 0 AND login = '"+ logins +"';`} 
 
 
 export const reGetUser = async (id) => {
-    const res  = await UserSql.findByPk(id);
-    // return {
-    //     code: 0,
-    //     message: "success",
-    //     data: res
-    // }
+  try {
+    const res = await sqlPool.query(sql4(id));
+    console.log(res)
+    return {
+      code: 0,
+      message: "query success",
+      data: res
+    }
+  } catch (error) {
+    throw new HttpException({ code: 500001, message: error });
+  }
 }
 
 export const createUser = async ({login: logins, password: passwords, age}) => {
-    console.log("====参数", logins, passwords)
-    passwords = md5(passwords);
-    // 如何在postgressql中设置id自增
-    const currentSql = `
-    INSERT INTO users (login, PASSWORD) VALUES ('"+ logins +"', '"+ passwords +"');
-    `
-    // 是否已存在该条数据
-    const result = await sqlPool.query(currentSql);
+    try {
+      passwords = md5(passwords);
+      // 如何在postgressql中设置id自增？？
+      // 是否已存在该条数据
+      sqlPool.query(sql7({login: logins})).then((res) => {
+        const [{count}] = res.rows;
+        if(count === '1') {
+          throw new HttpException({ code: 100003, message: ERROR_CODES[100003] });
+        }
+      })
+      await sqlPool.query(sql3({logins, passwords, age}));
       
-    return {
+      return {
         code: 0,
         message: "create success",
-        data: result
+        data: {}
+      }
+    } catch (error) {
+      return {
+        code: 500,
+        message: "error"
+      }
     }
-
+    
 }
 
-export const updateUser = async (id) => {
-    // await userModel.updateUser(id);
-    // return {
-    //     code: 0,
-    //     message: "update success"
-    // }
+export const updateUser = async ({id, newLogin}) => {
+    try {
+        await isUser(id);
+        await sqlPool.query(sql5({id, newLogin}));
+        return {
+            code: 0,
+            message: "update success",
+            data: {}
+        }
+    } catch (error) {
+      return {
+        code: 500,
+        message: "error"
+      }
+    }
 }
 
 export const deleteUser = async (id) => {
-    // await userModel.deleteUser(id);
-    // return {
-    //     code: 0,
-    //     message: "create success"
-    // }
+    try {
+        // 用户存在？
+        await isUser(id);
+        await sqlPool.query(sql6(id));
+        return {
+            code: 0,
+            message: "delete success",
+            data: {}
+        }
+    } catch (error) {
+      return {
+        code: 500,
+        message: "error"
+      }
+    }
+    
 }
 

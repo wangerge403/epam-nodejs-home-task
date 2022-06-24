@@ -1,6 +1,6 @@
-export const getErr = (errMsg = "server err", errCode = 500) => {
+export const getErr = (errMsg = "server err", code = 500) => {
     return {
-        code: errCode,
+        code: code,
         message: errMsg
     }
 }
@@ -13,14 +13,14 @@ export const getResult = (result) => {
     }
 }
 
-// 解决express异步报错
+// 解决express异步异常
 export const asyncHandler = (handler) => {
     return async (req, res, next) => {
         try {
             const result = await handler(req, res, next);
             res.send(getResult(result));
         } catch (error) {
-            next(err);
+            res.send(error);
         }
     }
 }
