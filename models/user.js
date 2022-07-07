@@ -86,7 +86,7 @@ merge(
   {
     sequelize,
     tableName: 'user',
-    modelName: 'UserSql'
+    modelName: 'user'
   }
 )
 )

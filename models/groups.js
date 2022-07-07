@@ -16,6 +16,11 @@ Group.init(
       allowNull: false,
       comment: '分组名称'
     },
+    permissions: {
+      type: Sequelize.JSON,
+      allowNull: false,
+      comment: '权限: '
+    },
     description: {
       type: Sequelize.STRING(255),
       allowNull: true,

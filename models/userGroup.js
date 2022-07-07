@@ -17,6 +17,11 @@ UserGroup.init(
       type: Sequelize.INTEGER,
       allowNull: false,
       comment: '分组id'
+    },
+    user_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      comment: '用户id'
     }
   },
   {

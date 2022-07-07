@@ -3,6 +3,9 @@
 
 ## branch name
 `task`
+
+## local start
+`pg_ctl.exe -D "../data" start`
 ## modules 1
 ### point
 1. modules、npm
@@ -16,3 +19,8 @@
 2. middleware
 3. websocket
 4. HTTP procotol
+
+## homework 4
+1. user
+2. groups
+3. user_group
