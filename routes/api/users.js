@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import {reGetUser, updateUser, createUser, deleteUser } from "../../services/userService"
-import { asyncHandler } from "../sendResult"
+import { asyncHandler } from "../resultConfig"
 import { validator } from "../../utils/validate"
 
 const router = Router();

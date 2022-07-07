@@ -1,5 +1,5 @@
 // 处理错误的中间件
-import { getErr } from '../routes/sendResult'
+import { getErr } from '../routes/resultConfig'
 
 module.exports = (err, req, res, next) => {
   if (err) {
