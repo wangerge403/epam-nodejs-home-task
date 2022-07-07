@@ -1,29 +1,16 @@
-// import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize";
 
-// const database = "postgres", username = "postgres", password = "123456";
-// const options = {
-//     host: "localhost",
-//     port: "5432",
-//     dialect: 'postgres',
-    
-// }
-
-// const sequelize = new Sequelize(database, username, password, options);
-
-// export default sequelize;
-
-
-import * as pg from "pg";
-
+const database = "postgres", username = "postgres", password = "123456";
 const options = {
     host: "localhost",
-    user: "postgres",
     port: "5432",
-    password: "123456"
+    dialect: 'postgres',
     
 }
 
-export const sqlPool = new pg.Pool(options);
+const sequelize = new Sequelize(database, username, password, options);
+
+export default sequelize;
 
 
 
