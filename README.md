@@ -6,6 +6,9 @@
 
 ## local start
 `pg_ctl.exe -D "../data" start`
+
+## tool
+pg Admin 4
 ## modules 1
 ### point
 1. modules、npm

@@ -1,66 +1,11 @@
-// import { v4 as uuid } from 'uuid'
-
-// const id = uuid().replace(/-/g, '');
-
-// const usersSQL = [
-//     {
-//         id: "",
-//         login: "",
-//         password: "",
-//         age: "",
-//         isDeleted: false
-//     }
-// ]
-// class UserModel {
-//   async createUser({login, password, age}) {
-//     usersSQL.push({
-//       id,
-//       login,
-//       password,
-//       age,
-//       isDeleted: false
-//     })
-//     return true;
-
-//   }
-
-//   async reGetUser(id) {
-//     const currentUser = usersSQL.find((item) => {return item.id === id });
-//     return currentUser;
-//   }
-
-//   // 删除指定用户
-//   async deleteUser(id) {
-//     usersSQL.forEach(item => {
-//       if(item.id === id) {
-//         item.isDeleted = true;
-//       }
-//     });
-      
-//   }
-//   // 更新用户信息
-//   async updateUser({login, password, age}) {
-//     usersSQL.forEach(item => {
-//       if(item.login=== login && item.password === password) {
-//         item.age = age;
-//       }
-//     });
-
-
-//      return false; 
-//   }
-// }
-
-// export default UserModel;
-
 import { Sequelize, Model } from "sequelize";
 import sequelize from "../config/db";
 import { merge } from 'lodash';
 
-class UserSql extends Model{};
+class User extends Model{};
 
 
-UserSql.init({
+User.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -74,6 +19,11 @@ UserSql.init({
     type: Sequelize.STRING(500),
     allowNull: false,
     comment: '密码'
+  },
+  age: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    comment: '年龄'
   },
   is_deleted: {
     type: Sequelize.BOOLEAN,
@@ -91,4 +41,4 @@ merge(
 )
 )
 
-export { UserSql };
+export { User as UserModel };

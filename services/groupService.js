@@ -14,7 +14,10 @@ class GroupService {
   // get group by id
   async getGroupById(id){
     const group = await GroupModel.findByPk(id);
-    return group;
+    if (group) {
+      return group.toJSON();
+    }
+    return null;
   }
   // update group
   async updateGroup ({id, groupName, permissions }) {
@@ -24,7 +27,12 @@ class GroupService {
     }
     group.name = groupName;
     group.permissions = permissions;
-    await group.save();
+    const result = GroupModel.update(group, {
+      where: {
+        id,
+      }
+    })
+    return result;
   }
   // create group
   async createGroup ({groupName, permissions}) {
@@ -41,7 +49,7 @@ class GroupService {
     let transaction;
     try {
       transaction = await sequelize.transaction();
-      await GroupModel.create(
+      const ins = await GroupModel.create(
         {
           group_name: groupName,
           permissions
@@ -51,12 +59,12 @@ class GroupService {
         }
       );
       await transaction.commit();
+      return ins.toJSON();
     } catch (err) {
       if (transaction) {
         await transaction.rollback();
       }
     }
-    return true;
   }
   // delete(remove) group
   async deleteGroup (id) {
@@ -65,7 +73,6 @@ class GroupService {
     if (!group) {
       throw new HttpException({ code: 400001});
     }
-    // 权限？？
     let transaction;
     try {
       transaction = await sequelize.transaction();
@@ -78,13 +85,14 @@ class GroupService {
         },
         transaction
       });
-      await UserGroupModel.destroy({
+      const result = await UserGroupModel.destroy({
         where: {
           group_id: group.id
         },
         transaction
       });
       await transaction.commit();
+      return result;
     } catch (error) {
       if (transaction) await transaction.rollback();
     }

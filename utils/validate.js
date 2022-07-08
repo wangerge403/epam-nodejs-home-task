@@ -21,5 +21,11 @@ export const validator = {
             message: "密码必须是字符串类型"
         })
     },
+    permissions: (res) => {
+        console.log(res)
+        // if(!res || !JSON.parse(res) || JSON.parse(res).length === 0) {
+        //     throw new HttpException({code: 400004,message: "权限必须是json类型"})
+        // }
+    }
 
 }

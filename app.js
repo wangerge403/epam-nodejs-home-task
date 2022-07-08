@@ -5,16 +5,17 @@
 
 import express from "express";
 import  userRouter from "./routes/api/users";
+import  groupRouter from "./routes/api/group";
 import errorMiddleware from "./middleware/errorMiddleware";
 
 const app = express();
 const port = 5008;
 
 app.use(express.json())
-// user api
-app.use(userRouter)
+// user api & group api
+app.use(userRouter).use(groupRouter)
 
-// 处理错误中间件
+// 处理错误
 app.use(errorMiddleware)
 
 app.listen(port, () => {

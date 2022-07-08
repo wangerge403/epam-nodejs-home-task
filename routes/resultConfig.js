@@ -15,9 +15,11 @@ export const getResult = (result) => {
 
 // 解决express异步异常
 export const asyncHandler = (handler) => {
+    console.log("=============", handler)
     return async (req, res, next) => {
         try {
             const result = await handler(req, res, next);
+                console.log(req, res, next)
             res.send(getResult(result));
         } catch (error) {
             res.send(error);
